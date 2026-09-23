@@ -2,6 +2,7 @@
 
 import Head from 'next/head';
 import Menu from './components/menu/menu';
+import './Global.css';
 
 export default function RootLayout({ children }) {
   return (
@@ -10,6 +11,8 @@ export default function RootLayout({ children }) {
           <Head>
             <title>Template</title>
             <link rel="icon" href="/favicon.ico" />
+            {/* Tailwind CSS responsive setup */}
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           </Head>
 
           <main>
