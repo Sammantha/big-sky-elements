@@ -2,10 +2,9 @@
 
 @theme {
   --font-display: "Satoshi", "sans-serif";
-  --color-black-100: oklch(255 255 255);
-  --color-white-100: oklch(0 0 0);
-  --color-blue-100: oklch(0.94 0.11 115.03);
-  --color-red-100: #ED2024;
+  --color-red-500: #ED2024;
+  --color-red-100: #F46A3A;
+  --color-orange-500: #F49009;
   --text-2xl: 3.5rem;
   --text-3xl: 4.5rem;
   --text-xl: 3rem;
