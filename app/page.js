@@ -18,8 +18,8 @@ export default function Home() {
       Photo of product
       With opaque circle behind contrasting with background (white?) 
     */}
-    <div className="max-w bg-[url(/img/fire.jpg)] bg-contain">
-      <div className="bg-red-500/70 flex max-w gap-x-4 p-6 py-12">
+    <div className="max-w bg-[url(/img/fire.jpg)] bg-cover">
+      <div className="bg-red-500/70 flex max-w gap-x-4 p-6">
         {/* left 60% */}
         <div className="w-100 flex flex-60 flex-col">
           <div className="">
@@ -37,7 +37,7 @@ export default function Home() {
         {/* right 40% */}
         <div className="w-100 flex flex-40 justify-center items-center relative">
           <img className="w-90 rotate-30 absolute" src="/img/orange-circle.png" />
-          <img className="max-w rotate-30 relative scale-125" src="img/product_img_trim.png" alt="Element Fire Extinguisher Product Photo" />
+          <img className="rotate-30 relative scale-125 max-h-125" src="img/product_img_trim.png" alt="Element Fire Extinguisher Product Photo" />
         </div>
       </div>
   </div>
