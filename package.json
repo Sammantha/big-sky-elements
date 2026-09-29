@@ -8,14 +8,14 @@
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.16.0",
     "@tailwindcss/postcss": "^4.3.3",
-    "next": "latest",
+    "next": "^16.0.0",
     "postcss": "^8.5.28",
-    "react": "latest",
-    "react-dom": "latest",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "tailwindcss": "^4.3.3"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "allowScripts": {
     "sharp@0.34.5": true
