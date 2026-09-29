@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@netlify/plugin-nextjs": "^5.16.0",
     "@tailwindcss/postcss": "^4.3.3",
     "next": "latest",
     "postcss": "^8.5.28",
@@ -14,7 +15,7 @@
     "tailwindcss": "^4.3.3"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "allowScripts": {
     "sharp@0.34.5": true
