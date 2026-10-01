@@ -22,8 +22,11 @@
   h3 {
     font-size: var(--text-lg);
   }
-  p {
+  h4 {
     font-size: var(--text-md);
+  }
+  p {
+    font-size: var(--text-sm);
   }
   a {
     color: var(--color-blue-100);

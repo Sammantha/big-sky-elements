@@ -77,9 +77,16 @@ export default function Home() {
       3. Bulk Order
   */}
   <div className="bg-white-100 p-5 px-40 flex items-center">
-    <Card backgroundColor="white"><img width="50px" src="img/emt_icon.png"/><h4>EMT Discount</h4></Card>
-    <Card backgroundColor="bg-orange-400"><img width="50px" src="img/bulk_icon.png"/><h4>Bulk Order Disount</h4></Card>
-    <Card backgroundColor="bg-white"><img width="50px" src="img/military_icon.png"/><h4>Military Discount</h4></Card>
+    <Card backgroundColor="bg-white">
+      <img className="pb-5" width="135" src="img/E50_logo.png" />
+      <img className="" width="300" src="img/E50_product_image.png" alt="E50 product measurements: 30cm tall & 3.2cm diameter"/>
+      <p className="pt-5">50 second discharge</p>
+    </Card>
+    <Card backgroundColor="bg-white">
+      <img className="pb-5" width="150" src="img/E100_logo.png" />
+      <img className="" width="300" src="img/E100_product_image.png" alt="E100 product measurements: 33cm tall, 3.2cm body diameter, & 4cm handle diameter"/>
+      <p className="pt-5">100 second discharge</p>
+    </Card>
   </div>
 
   {/* Section 5
@@ -90,7 +97,59 @@ export default function Home() {
   */}
   <div className="bg-red-500 p-10 flex flex-col">
     <h1 className='text-white text-shadow-lg'>Place an Order</h1>
-    <p>To place an order, email Sheila Crow at <Link href="mailto:bigskyelements@gmail.com">BigSkyElements@gmail.com</Link></p>
+    <h4>To place an order, email Sheila Crow at <Link href="mailto:bigskyelements@gmail.com">BigSkyElements@gmail.com</Link></h4>
+  </div>
+
+  {/* Section 6
+    FAQ
+  */}
+    <div className="bg-white p-10 m-10 flex flex-col">
+    <h1 className='text-black text-center'>FAQ</h1>
+    
+    <details className="border-b border-gray-400 py-5">
+      <summary className="faq-question">
+        Does Element require service & does it expire?
+      </summary>
+      <div className="pt-5">
+        <p>Element's solid construction, no moving parts, and lack of compressed gas (unlike a traditional fire extinguisher) means it will never need any service or upkeep. In addition the solid chemical that makes up the Element extinguisher has no effective expiration.</p>
+      </div>
+    </details>
+  
+    <details className="border-b border-gray-400 py-5">
+      <summary className="faq-question">
+        Is Element affected by extreme weather & can it get wet? Can I store it in my car?
+      </summary>
+      <div className="pt-5">
+        <p>Element has been tested to work effectively in temperatures from -58°F to +176°F (-50°C to + 80°C). Moreover Element's solid construction and no moving parts makes it unaffected by harsh environments or humidity. Element can safely be stored in damp and wet environments, provided that the yellow cap covering the tip stays present allowing the tip to remain dry.&nbsp;</p><p></p><p><strong>Element can safely be stored in vehicles that live in hot climates.&nbsp;</strong></p>
+      </div>
+    </details>
+  
+    <details className="border-b border-gray-400 py-5">
+      <summary className="faq-question">
+        Is Element certified?
+      </summary>
+      <div className="pt-5">
+        <p>Originating in Italy, Element has been certified by CE Europe, TUV, and the Italian maritime authority. Institutionally it has been tested and certified for use by multiple international military and police groups who have adopted it for active use.</p>
+      </div>
+    </details>
+
+    <details className="border-b border-gray-400 py-5">
+      <summary className="faq-question">
+        Do you offer first responders or members of the military discounts on Element?
+      </summary>
+      <div className="pt-5">
+        <p>Yes, we offer a 5% discount to first responders and military members. Please use <Link href="">ID.me</Link> to obtain your discount code and include it in your order email.</p>
+      </div>
+    </details>
+
+    <details className="border-b border-gray-400 py-5">
+      <summary className="faq-question">
+        Do you offer a bulk discount?
+      </summary>
+      <div className="pt-5">
+        <p>Yes, we offer various bulk order discounts on order quantities of 5 or more. Please mention the discount in your order email.</p>
+      </div>
+    </details>
   </div>
   </>
   );
