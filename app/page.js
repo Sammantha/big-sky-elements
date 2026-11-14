@@ -3,7 +3,8 @@ import Link from "next/link";
 import Card from "./components/card";
 import VideoComponent from './components/video';
 import InfoBubbleCard from './components/infoBubbleCard';
-import Cart from './components/cart';
+import Ecommerce from './components/ecommerce';
+import Carousel from './components/carousel';
 
 export default function Home() {
     return (
@@ -20,15 +21,15 @@ export default function Home() {
         With opaque circle behind contrasting with background (white?) 
       */}
       <div className="max-w bg-[url(/img/fire.jpg)] bg-cover">
-        <div className="bg-red-500/70 flex max-w gap-x-4 p-4 lg:p-6">
+        <div className="bg-red-500/70 flex max-w gap-x-4 p-4 lg:p-6 flex-col sm:flex-row">
           {/* left 60% */}
-          <div className="w-100 flex flex-60 flex-col">
-            <div className="absolute z-10">
-              <div className="text-xl md:text-2xl lg:text-3xl font-bold text-white text-shadow-lg">Big Sky Elements</div>
-              <p className="text-md md:text-lg lg:text-xl text-black">Element Fire Extinguishers</p>
-              <div className="flex items-center">
-                  <button className="text-white px-4 py-2 my-4 h-12 rounded-full bg-orange-500">Buy Now</button>
-                  <Link className="mx-5 no-underline inline-flex items-center" href="#video">
+          <div className="w-100 flex flex-100 sm:flex-60 flex-col">
+            <div className="sm:absolute z-10">
+              <div className="text-center sm:text-left text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white text-shadow-lg">Big Sky Elements</div>
+              <p className="text-center sm:text-left text-sm sm:text-md md:text-lg lg:text-xl text-black">Element Fire Extinguishers</p>
+              <div className="flex items-center justify-center sm:justify-start">
+                  <Link href="#cart"><button className="text-white text-xs lg:text-sm px-4 py-2 my-4 h-12 rounded-full bg-orange-500">Buy Now</button></Link>
+                  <Link className="text-xs lg:text-sm mx-5 no-underline inline-flex items-center" href="#video">
                     <img className="w-10 mx-2" src="img/play_icon.png" alt="play icon" />
                     Watch It In Action
                   </Link>
@@ -36,9 +37,9 @@ export default function Home() {
             </div>
           </div>
           {/* right 40% */}
-          <div className="w-100 flex flex-40 justify-center items-center relative">
-            <img className="w-90 rotate-30 absolute" src="/img/orange-circle.png" />
-            <img className="rotate-30 relative scale-125 max-h-125" src="img/product_img_trim.png" alt="Element Fire Extinguisher Product Photo" />
+          <div className="w-100 flex pb-6 sm:pb-0 flex-40 justify-center items-center relative">
+            <img className="w-55 sm:w-50 md:w-60 lg:w-80 xl:w-100 rotate-30 sm:absolute" src="/img/orange-circle.png" />
+            <img className="rotate-30 absolute sm:relative scale-75 sm:scale-125 m-h-100 sm:max-h-125" src="img/product_img_trim.png" alt="Element Fire Extinguisher Product Photo" />
           </div>
         </div>
     </div>
@@ -48,8 +49,8 @@ export default function Home() {
       Product centered
       4 highlights of product in 4 quadrants surrounding product
     */}
-    <div className="bg-white flex flex-col p-5 relative justify-center">
-      <h2 className='text-black text-center'>- Fights All Major Fire Classes -</h2>
+    <div className="bg-white flex flex-col relative py-3 justify-center">
+      <h2 className='text-black text-center px-1 text-md sm:text-lg md:text-xl lg:text-2xl'>Fights All Major Fire Classes</h2>
       <div className="hidden lg:block">
         <div className='flex flex-row px-10 mb-0 z-1 max-w justify-between'>
           <InfoBubbleCard><img className="lg:w-50 w-30" src="img/classA.png" alt="Class A Fires: Solid combustables"/></InfoBubbleCard>
@@ -77,7 +78,7 @@ export default function Home() {
     {/* Section 3
       Video - which the link from the FOLD brings you to
     */}
-    <div id="video" className="bg-orange-400 py-10 justify-center">
+    <div id="video" className="bg-orange-400 sm:py-10 justify-center">
       <Suspense fallback={<p>Loading video...</p>}>
         <VideoComponent className="max-w max-h"/>
       </Suspense>
@@ -86,25 +87,27 @@ export default function Home() {
     {/* Section 4
       Products
     */}
-    <div className="bg-white-100 p-5 px-40 flex items-center">
-      <Card backgroundColor="bg-white">
-        <img className="pb-5" width="135" src="img/E50_logo.png" />
-        <img className="" width="300" src="img/E50_product_image.png" alt="E50 product measurements: 30cm tall & 3.2cm diameter"/>
-        <p className="pt-5">50 second discharge</p>
-      </Card>
-      <Card backgroundColor="bg-white">
-        <img className="pb-5" width="150" src="img/E100_logo.png" />
-        <img className="" width="300" src="img/E100_product_image.png" alt="E100 product measurements: 33cm tall, 3.2cm body diameter, & 4cm handle diameter"/>
-        <p className="pt-5">100 second discharge</p>
-      </Card>
+    <div className="bg-white-100 p-5 lg:px-30 flex items-center justify-evenly">
+      <Carousel>
+        <Card backgroundColor="bg-white">
+          <img className="pb-5" width="135" src="img/E50_logo.png" />
+          <img className="" width="300" src="img/E50_product_image.png" alt="E50 product measurements: 30cm tall & 3.2cm diameter"/>
+          <p className="pt-5">50 second discharge</p>
+        </Card>
+        <Card backgroundColor="bg-white">
+          <img className="pb-5" width="150" src="img/E100_logo.png" />
+          <img className="" width="300" src="img/E100_product_image.png" alt="E100 product measurements: 33cm tall, 3.2cm body diameter, & 4cm handle diameter"/>
+          <p className="pt-5">100 second discharge</p>
+        </Card>
+      </Carousel>
     </div>
 
     {/* Section 5
       Order Placement and Payment
     */}
     <div className="bg-red-500 p-10 flex flex-col">
-      <h1 className='text-white text-shadow-lg'>Place an Order</h1>
-      <Cart/>
+      <h1 id="cart" className='text-white text-shadow-lg'>Place an Order</h1>
+      <Ecommerce/>
     </div>
 
     {/* Section 6

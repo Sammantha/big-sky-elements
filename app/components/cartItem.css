@@ -1,14 +1,5 @@
-.adjust-cart-count {
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.adjust-cart-count input{
-    flex-basis: 33%;
-    text-align: center;
-}
-
-.cartItem img {
-    max-width: 100px;
+#adjust-cart-count #quantityControl input[type=number]::-webkit-inner-spin-button, 
+#adjust-cart-count #quantityControl input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }

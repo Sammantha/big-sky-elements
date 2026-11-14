@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const FIRST_RESPONDER_DISCOUNT_CODE = process.env.NEXT_PUBLIC_FIRST_RESPONDER_DISCOUNT_CODE ?? '';
 
-const DiscountCode = props => {
+export default function DiscountCode(props) {
     const [state, setState] = useState('');
 
     const evaluateDiscountCode = (discountCode) => {
@@ -30,11 +30,9 @@ const DiscountCode = props => {
     }
 
     return (
-        <div className="p-3">
+        <div className="p-6">
             <p>Discount Code:</p>
             <input value={state} onChange={onChangeDiscountCode} className="border border-gray-400"/>
         </div>
     );
 }
-
-export default DiscountCode;

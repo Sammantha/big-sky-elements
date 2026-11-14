@@ -1,6 +1,6 @@
 "use client";
 
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import CartItem from './cartItem';
 import DiscountCode from './discountCode';
 
@@ -31,33 +31,30 @@ const DEFAULT_STATE = {
     total: 0
 };
 
-export default class Cart extends Component {
-    constructor(props) {
-        super(props);
-        this.state = DEFAULT_STATE;
-        this.lockCheckout = false;
-    }
+export default function Cart(props) {
+    const { onCheckout } = props;
+    const [state, setState] = useState(DEFAULT_STATE);
 
     // load the existing cart from the local storage on component load
-    async componentDidMount() {
+    useEffect(() => {
         let cart = localStorage.getItem("cart");
         if (cart) {
             const parsed = JSON.parse(cart);
             // only override the default cart if the localStorage has a value
-            this.setStateAndUpdateTotals(parsed.length > 0 ? cart : DEFAULT_CART);
+            setStateAndUpdateTotals(parsed.length > 0 ? cart : DEFAULT_CART);
         } else {
-            this.setState(DEFAULT_STATE);
+            setState(DEFAULT_STATE);
         }
-    }
+    }, []);
 
-    setStateAndUpdateTotals = (cart) => {
-        let discountPercent = this.state.discountPercent;
+    const setStateAndUpdateTotals = cart => {
+        let discountPercent = state.discountPercent;
         let discountDollarAmount = 0;
         let subtotal = 0;
         let shipping = 0;
         let total = 0;
         // set the cart state, overwrite subtotal, shipping, discountDollarAmount, & total, & retain discount
-        this.setState({ cart, subtotal, shipping, discountPercent, discountDollarAmount, total });
+        setState({ cart, subtotal, shipping, discountPercent, discountDollarAmount, total });
         // calculate subtotal & item count
         let totalNumberItems = 0;
         Object.keys(cart).map(key => {
@@ -70,12 +67,12 @@ export default class Cart extends Component {
         shipping = totalNumberItems === 1 ? DEFAULT_SHIPPING : 0.00;
         total = subtotal - discountDollarAmount + shipping;
         // set the subtotal, shipping, & total states, retaining the cart state & discount
-        this.setState({ cart, subtotal, shipping, discountPercent, discountDollarAmount, total });
+        setState({ cart, subtotal, shipping, discountPercent, discountDollarAmount, total });
     }
 
     // appends the item using the item ID as key for the cart object
-    addToCart = cartItem => {
-        let cart = this.state.cart;
+    const addToCart = cartItem => {
+        let cart = state.cart;
         // checks the cart object to see if an item with that key exists
         if (cart[cartItem.id]) {
             // If it does, it increases/decreases the amount
@@ -93,13 +90,13 @@ export default class Cart extends Component {
             }
         }
         localStorage.setItem("cart", JSON.stringify(cart));
-        // this.setState({ cart, subtotal });
-        this.setStateAndUpdateTotals(cart);
+        // setState({ cart, subtotal });
+        setStateAndUpdateTotals(cart);
     };
 
     // overwrites the desired amount of the item using the item ID as key for the cart object
-    overwriteAmount = cartItem => {
-        let cart = this.state.cart;
+    const overwriteAmount = cartItem => {
+        let cart = state.cart;
         // checks the cart object to see if an item with that key exists
         if (cart[cartItem.id]) {
             // If it does, it overwrites the amount
@@ -117,71 +114,62 @@ export default class Cart extends Component {
             cart[cartItem.id].amount = potentialAmount;
         }
         localStorage.setItem("cart", JSON.stringify(cart));
-        // this.setState({ cart, subtotal });
-        this.setStateAndUpdateTotals(cart);
+        // setState({ cart, subtotal });
+        setStateAndUpdateTotals(cart);
     };
 
     // change the discount, or reset it to the default discount if the discount is unusual
-    changeDiscount = discountAmount => {
-        this.state.discountPercent = discountAmount > 0.00 && discountAmount < .1 ? discountAmount : DEFAULT_DISCOUNT;
-        this.setStateAndUpdateTotals(this.state.cart);
+    const changeDiscount = discountAmount => {
+        state.discountPercent = discountAmount > 0.00 && discountAmount < .1 ? discountAmount : DEFAULT_DISCOUNT;
+        setStateAndUpdateTotals(state.cart);
     }
 
-    checkout = () => {
-        this.lockCheckout = true;
-        console.log('order placed for ', this.state.total);
-        // TODO: send request to Square
-        // reset the cart to default & clear discount code
-        this.state = DEFAULT_STATE;
-        this.setStateAndUpdateTotals(DEFAULT_CART);
-        this.lockCheckout = false;
+    const checkout = () => {
+        // pass along all cart details so email can be sent and review order page is accurate
+        onCheckout(state);
     }
 
-    render() {
-        return (
-            <div className="bg-white p-3">
-                {Object.keys(this.state.cart || {}).length
-                    ? ( <>
-
-                    {/*  CART ITEMS */}
-                    {Object.keys(this.state.cart || {}).map(key => (
-                        <div className="flex p-3" key={key}>                                
-                            <div className="w-1/2">
-                                <CartItem
-                                    cartKey={key}
-                                    cartItem={this.state.cart[key]}
-                                    addToCart={this.addToCart}
-                                    overwriteAmount={this.overwriteAmount}
-                                />
-                            </div>
-                            <div className="flex w-1/2 items-end justify-end">
-                                ${Math.abs((this.state.cart[key].amount) * this.state.cart[key].price).toFixed(2)}
-                            </div>
+    return (
+        <div className="bg-white p-3">
+            {Object.keys(state.cart || {}).length
+                ? ( <>
+                {/*  CART ITEMS */}
+                {Object.keys(state.cart || {}).map(key => (
+                    <div className="flex p-3" key={key}>                                
+                        <div className="w-1/2">
+                            <CartItem
+                                cartKey={key}
+                                cartItem={state.cart[key]}
+                                addToCart={addToCart}
+                                overwriteAmount={overwriteAmount}
+                            />
                         </div>
-                        ))}
-
-                        {/* DISCOUNT INPUT */}
-                        <DiscountCode changeDiscount={this.changeDiscount}/>
-
-                        {/* TOTALS */}
-                        <div className='flex flex-col items-end p-3'>
-                            <div><strong className="mr-3">Subtotal:</strong>${(this.state.subtotal || 0).toFixed(2)}</div>
-                            <div className={this.state.discountDollarAmount > 0.00 ? '' : 'hidden'}><div className='text-red-500'><strong className="mr-3">Discount:</strong> - ${this.state.discountDollarAmount.toFixed(2)}</div></div>
-                            <div><strong className="mr-7">Flat Shipping Fee:</strong>${(this.state.shipping ?? 0).toFixed(2)}</div>
-                            <div><strong className="mr-3">Total:</strong> ${(this.state.total || 0).toFixed(2)}</div>
+                        <div className="flex w-1/2 items-end justify-end">
+                            ${Math.abs((state.cart[key].amount) * state.cart[key].price).toFixed(2)}
                         </div>
+                    </div>
+                    ))}
 
-                        {/*  CHECKOUT */}
-                        <div className='flex justify-center'>
-                            {/* TODO: disable button & add loading symbol after click */}
-                            <button className="bg-red-500 text-white p-5 w-100" disabled={this.lockCheckout} onClick={this.checkout}>Checkout</button>
-                        </div>
-                    </>) : (<>
-                        {/* when the cart is empty */}
-                        <p>Nothing in the cart!</p>
-                    </>
-                )}
-            </div>
-        );
-    };
-}
+                    {/* DISCOUNT INPUT */}
+                    <DiscountCode changeDiscount={changeDiscount}/>
+
+                    {/* TOTALS */}
+                    <div className='flex flex-col items-end p-3'>
+                        <div><strong className="mr-3">Subtotal:</strong>${(state.subtotal || 0).toFixed(2)}</div>
+                        <div className={state.discountDollarAmount > 0.00 ? '' : 'hidden'}><div className='text-red-500'><strong className="mr-3">Discount:</strong> - ${state.discountDollarAmount.toFixed(2)}</div></div>
+                        <div><strong className="mr-7">Flat Shipping Fee:</strong>${(state.shipping ?? 0).toFixed(2)}</div>
+                        <div><strong className="mr-3">Total:</strong> ${(state.total || 0).toFixed(2)}</div>
+                    </div>
+
+                    {/*  CHECKOUT */}
+                    <div className='flex justify-center mt-3'>
+                        <button className="bg-red-500 text-white p-5 w-100" onClick={checkout}>Checkout</button>
+                    </div>
+                </>) : (<>
+                    {/* when the cart is empty */}
+                    <p>Nothing in the cart!</p>
+                </>
+            )}
+        </div>
+    );
+};
