@@ -65,11 +65,15 @@ export default function Home() {
       <div className="lg:hidden">
         <div className="flex flex-col">
           <img className="max-w" src="img/product_firemans_hand.png" alt="An Element fire extinguisher held by a hand in a fireman's glove" />
-          <div className='flex flex-row justify-evenly'>
-            <InfoBubbleCard><img className="lg:w-50 w-30" src="img/classA.png" alt="Class A Fires: Solid combustables"/></InfoBubbleCard>
-            <InfoBubbleCard><img className="lg:w-50 w-30" src="img/classB.png" alt="Class B Fires: Flammable liquids and gases"/></InfoBubbleCard>
-            <InfoBubbleCard><img className="lg:w-50 w-30" src="img/classC.png" alt="Class C Fires: Electrical up to 100,000 Volts"/></InfoBubbleCard>
-            <InfoBubbleCard><img className="lg:w-50 w-30" src="img/classK.png" alt="Class K Fires: Cooking oil and grease"/></InfoBubbleCard>
+          <div className='flex flex-col sm:flex-row justify-evenly'>
+            <div className='flex flex-1 flex-row justify-evenly pb-5 sm:pb-0'>
+              <InfoBubbleCard><img className="lg:w-50 w-30" src="img/classA.png" alt="Class A Fires: Solid combustables"/></InfoBubbleCard>
+              <InfoBubbleCard><img className="lg:w-50 w-30" src="img/classB.png" alt="Class B Fires: Flammable liquids and gases"/></InfoBubbleCard>
+            </div>
+            <div className='flex flex-1 flex-row justify-evenly'>
+              <InfoBubbleCard><img className="lg:w-50 w-30" src="img/classC.png" alt="Class C Fires: Electrical up to 100,000 Volts"/></InfoBubbleCard>
+              <InfoBubbleCard><img className="lg:w-50 w-30" src="img/classK.png" alt="Class K Fires: Cooking oil and grease"/></InfoBubbleCard>
+            </div>
           </div>
       </div>
       </div>
