@@ -4,7 +4,7 @@ import Card from "./components/card";
 import VideoComponent from './components/video';
 import InfoBubbleCard from './components/infoBubbleCard';
 import Ecommerce from './components/ecommerce';
-import Carousel from './components/carousel';
+import ProductCarousel from './components/carousel';
 
 export default function Home() {
     return (
@@ -87,19 +87,23 @@ export default function Home() {
     {/* Section 4
       Products
     */}
-    <div className="bg-white-100 p-5 lg:px-30 flex items-center justify-evenly">
-      <Carousel>
-        <Card backgroundColor="bg-white">
-          <img className="pb-5" width="135" src="img/E50_logo.png" />
-          <img className="" width="300" src="img/E50_product_image.png" alt="E50 product measurements: 30cm tall & 3.2cm diameter"/>
-          <p className="pt-5">50 second discharge</p>
-        </Card>
-        <Card backgroundColor="bg-white">
-          <img className="pb-5" width="150" src="img/E100_logo.png" />
-          <img className="" width="300" src="img/E100_product_image.png" alt="E100 product measurements: 33cm tall, 3.2cm body diameter, & 4cm handle diameter"/>
-          <p className="pt-5">100 second discharge</p>
-        </Card>
-      </Carousel>
+    <div className="bg-white-100 p-5 lg:px-30 mb-5">
+      <ProductCarousel>
+        <div>
+          <Card backgroundColor="bg-white">
+            <img className="pb-5" width="135" src="img/E50_logo.png" />
+            <img className="min-w-50" width="300" src="img/E50_product_image.png" alt="E50 product measurements: 30cm tall & 3.2cm diameter"/>
+            <p className="pt-5">50 second discharge</p>
+          </Card>
+        </div>
+        <div>
+          <Card backgroundColor="bg-white">
+            <img className="pb-5" width="150" src="img/E100_logo.png" />
+            <img className="min-w-50" width="300" src="img/E100_product_image.png" alt="E100 product measurements: 33cm tall, 3.2cm body diameter, & 4cm handle diameter"/>
+            <p className="pt-5">100 second discharge</p>
+          </Card>
+        </div>
+      </ProductCarousel>
     </div>
 
     {/* Section 5
