@@ -5,6 +5,7 @@
   --color-red-500: #ED2024;
   --color-red-100: #F46A3A;
   --color-orange-500: #F49009;
+  --color-yellow-400: #DEDC05;
   --text-2xl: 3.5rem;
   --text-3xl: 4.5rem;
   --text-xl: 3rem;
@@ -28,7 +29,7 @@
     font-size: var(--text-md);
   }
   p {
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
   }
   a {
     color: var(--color-blue-100);

@@ -5,10 +5,15 @@ import VideoComponent from './components/video';
 import InfoBubbleCard from './components/infoBubbleCard';
 import Ecommerce from './components/ecommerce';
 import ProductCarousel from './components/carousel';
+import Banner from './components/banner';
 
 export default function Home() {
-    return (
-      <>
+
+  return (
+    <>
+      {/* BANNER: Advertise Sales */}
+      <Banner/>
+
       {/* Section 1 - Above the FOLD
       Big Photo in the background with little detail (maybe fire?)
       Overlayed by a color that's a little opaque (red?)
@@ -121,7 +126,7 @@ export default function Home() {
     {/* Section 6
       FAQ
     */}
-      <div className="bg-white p-10 m-10 flex flex-col">
+      <div className="bg-white p-3 sm:p-5 md:p-10 m-3 sm:m-5 md:m-10 flex flex-col">
         <h1 className='text-black text-center'>FAQ</h1>
         
         <details className="border-b border-gray-400 py-5">
@@ -160,14 +165,14 @@ export default function Home() {
           </div>
         </details>
 
-        <details className="border-b border-gray-400 py-5">
+        {/* <details className="border-b border-gray-400 py-5">
           <summary className="faq-question">
             Do you offer a bulk discount?
           </summary>
           <div className="pt-5">
             <p>Yes, we offer various bulk order discounts on order quantities of 5 or more. Please mention the discount in your order email.</p>
           </div>
-        </details>
+        </details> */}
       </div>
     </>
     );
