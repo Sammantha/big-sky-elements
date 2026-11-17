@@ -14,8 +14,8 @@ export default function Ecommerce() {
      * 3 = thank you
      */
     const [page, setPage] = useState(0);
-    const [cart, setCart] = useState({});
-    const [address, setAddress] = useState(null);
+    const [order, setOrder] = useState({});
+    const [address, setAddress] = useState({});
 
     const advancePage = () => {
         setPage(page + 1);
@@ -27,7 +27,7 @@ export default function Ecommerce() {
 
     const saveCartInfo = (cartInfo) => {
         // look at the top of cart.js for how cartInfo is structured
-        setCart(cartInfo);
+        setOrder(cartInfo);
         advancePage();
     };
 
@@ -50,7 +50,7 @@ export default function Ecommerce() {
             </div>
             {/* When the Review button is clicked, display a review of the order */}
             <div className={page !== 2 ? "hidden" : ""}>
-                <ReviewOrder onPayment={advancePage} cart={cart} details={address}/>
+                <ReviewOrder onPayment={advancePage} order={order} details={address}/>
                 <button className="p-3" onClick={reversePage} >{`< back`}</button>
             </div>
             {/* When the Place Order button is clicked, display a thank you page */}

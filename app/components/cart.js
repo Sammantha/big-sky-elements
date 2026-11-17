@@ -34,6 +34,7 @@ const DEFAULT_STATE = {
 export default function Cart(props) {
     const { onCheckout } = props;
     const [state, setState] = useState(DEFAULT_STATE);
+    const [discountCode, setDiscountCode] = useState('');
 
     // load the existing cart from the local storage on component load
     useEffect(() => {
@@ -47,27 +48,22 @@ export default function Cart(props) {
         }
     }, []);
 
-    const setStateAndUpdateTotals = cart => {
-        let discountPercent = state.discountPercent;
-        let discountDollarAmount = 0;
-        let subtotal = 0;
-        let shipping = 0;
-        let total = 0;
-        // set the cart state, overwrite subtotal, shipping, discountDollarAmount, & total, & retain discount
-        setState({ cart, subtotal, shipping, discountPercent, discountDollarAmount, total });
-        // calculate subtotal & item count
-        let totalNumberItems = 0;
-        Object.keys(cart).map(key => {
-            const cartItem = cart[key];
-            subtotal += Math.abs((cartItem.amount) * cartItem.price);
-            totalNumberItems += cartItem.amount;
+    const setStateAndUpdateTotals = async (cartInput, discount = discountCode) => {
+        // const { cart, discountDollarAmount, discountPercent, shipping, subtotal, total }
+        const payload = JSON.stringify({
+            cart: cartInput,
+            discountCode: discount
         });
-        // calculate total
-        discountDollarAmount = subtotal * ((discountPercent > 0.00) ? (discountPercent) : 0);
-        shipping = totalNumberItems === 1 ? DEFAULT_SHIPPING : 0.00;
-        total = subtotal - discountDollarAmount + shipping;
+        const response = await fetch(`/api/checkout`, {
+            method: "POST",
+            body: payload
+        });
+        const { cart, discountDollarAmount, discountPercent, shipping, subtotal, total } = response ? await response?.json() : {};
+
+        // TODO: check for errors before setting state
+
         // set the subtotal, shipping, & total states, retaining the cart state & discount
-        setState({ cart, subtotal, shipping, discountPercent, discountDollarAmount, total });
+        setState({ cart, discountDollarAmount, discountPercent, shipping, subtotal, total });
     }
 
     // appends the item using the item ID as key for the cart object
@@ -119,14 +115,16 @@ export default function Cart(props) {
     };
 
     // change the discount, or reset it to the default discount if the discount is unusual
-    const changeDiscount = discountAmount => {
-        state.discountPercent = discountAmount > 0.00 && discountAmount < .1 ? discountAmount : DEFAULT_DISCOUNT;
-        setStateAndUpdateTotals(state.cart);
+    const changeDiscount = (event) => {
+        setDiscountCode(event.discountCode);
+        setStateAndUpdateTotals(state.cart, event.discountCode);
     }
 
     const checkout = () => {
         // pass along all cart details so email can be sent and review order page is accurate
-        onCheckout(state);
+        const payload = state;
+        payload.discountCode = discountCode;
+        onCheckout(payload);
     }
 
     return (
@@ -151,13 +149,15 @@ export default function Cart(props) {
                     ))}
 
                     {/* DISCOUNT INPUT */}
-                    <DiscountCode changeDiscount={changeDiscount}/>
+                    <DiscountCode changeDiscount={(e) => changeDiscount(e)}/>
 
                     {/* TOTALS */}
                     <div className='flex flex-col items-end p-3'>
                         <div><strong className="mr-3">Subtotal:</strong>${(state.subtotal || 0).toFixed(2)}</div>
-                        <div className={state.discountDollarAmount > 0.00 ? '' : 'hidden'}><div className='text-red-500'><strong className="mr-3">Discount:</strong> - ${state.discountDollarAmount.toFixed(2)}</div></div>
-                        <div><strong className="mr-7">Flat Shipping Fee:</strong>${(state.shipping ?? 0).toFixed(2)}</div>
+                        <div className={state?.discountDollarAmount > 0.00 ? 'block' : 'hidden'}>
+                            <div className='text-red-500'><strong className="mr-3">Discount:</strong> - ${(state?.discountDollarAmount ?? 0.00).toFixed(2)}</div>
+                        </div>
+                        <div><strong className="mr-7">Shipping:</strong>${(state.shipping ?? 0).toFixed(2)}</div>
                         <div><strong className="mr-3">Total:</strong> ${(state.total || 0).toFixed(2)}</div>
                     </div>
 

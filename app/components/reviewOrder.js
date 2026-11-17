@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartItem from "./cartItem";
 
 export default function ReviewOrder(props){
-    const { details, cart, onPayment } = props;
-    const [state, setState] = useState('');
+    const { details, order, onPayment } = props;
+    const [state, setState] = useState({});
 
     const onPayNow = () => {
         // Possible TODO: implement locking so customer cannot click Pay Now twice?
@@ -14,6 +14,34 @@ export default function ReviewOrder(props){
         onPayment();
         // TODO: if failure, display error from Square & unlock button(?)
     }
+
+    const setStateAndUpdateTotals = async (cartInput, discount) => {
+        if (cartInput) {
+            const payload = JSON.stringify({
+                cart: cartInput,
+                discountCode: discount
+            });
+            const response = await fetch(`/api/checkout`, {
+                method: "POST",
+                body: payload
+            });
+
+            const parsedResponse = response ? await response?.json() : {};
+            const { cart, discountDollarAmount, discountPercent, shipping, subtotal, total } = parsedResponse;
+
+            // TODO: check for errors before setting state
+
+            // set the subtotal, shipping, & total states, retaining the cart state & discount
+            setState({ cart, discountDollarAmount, discountPercent, shipping, subtotal, total });
+        }
+    }
+
+    // re-calculate the totals on load
+    useEffect(() => {
+        if (order) {
+            setStateAndUpdateTotals(order?.cart, order?.discountCode);
+        }
+    }, [order]);
 
     return (
         <div className="bg-white p-3">
@@ -42,22 +70,22 @@ export default function ReviewOrder(props){
                 <div className="w-1/2">
                     <div className="mb-5">
                         {/* Cart Details */}
-                        {Object.keys(cart.cart || {}).map((key) => (
-                            cart.cart[key].amount > 0 
+                        {order && Object.keys(order?.cart || {}).map((key) => (
+                            order?.cart[key].amount > 0 
                             && <CartItem
                                     key={key}
                                     cartKey={key}
-                                    cartItem={cart.cart[key]}
+                                    cartItem={order?.cart[key]}
                                 />
                         ))}
                     </div>
 
                     {/* TOTALS */}
                     <div className='flex flex-col items-end'>
-                        <div><strong className="mr-3">Subtotal:</strong>${(cart?.subtotal || 0).toFixed(2)}</div>
-                        <div className={cart?.discountDollarAmount > 0.00 ? '' : 'hidden'}><div className='text-red-500'><strong className="mr-3">Discount:</strong> - ${cart?.discountDollarAmount?.toFixed(2)}</div></div>
-                        <div><strong className="mr-7">Flat Shipping Fee:</strong>${(cart?.shipping ?? 0).toFixed(2)}</div>
-                        <div><strong className="mr-3">Total:</strong> ${(cart?.total || 0).toFixed(2)}</div>
+                        <div><strong className="mr-3">Subtotal:</strong>${(state?.subtotal || 0).toFixed(2)}</div>
+                        <div className={state?.discountDollarAmount > 0.00 ? '' : 'hidden'}><div className='text-red-500'><strong className="mr-3">Discount:</strong> - ${state?.discountDollarAmount?.toFixed(2)}</div></div>
+                        <div><strong className="mr-7">Shipping:</strong>${(state?.shipping ?? 0).toFixed(2)}</div>
+                        <div><strong className="mr-3">Total:</strong> ${(state?.total || 0).toFixed(2)}</div>
                     </div>
                 </div>
             </div>

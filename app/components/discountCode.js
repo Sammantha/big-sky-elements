@@ -1,36 +1,25 @@
 "use client";
 
-import { useState } from "react";
-
-const FIRST_RESPONDER_DISCOUNT_CODE = process.env.NEXT_PUBLIC_FIRST_RESPONDER_DISCOUNT_CODE ?? '';
+import { useCallback, useState } from "react";
+import evaluateDiscountCode from '../api/checkout/discountCode';
+import debounce from 'debounce';
 
 export default function DiscountCode(props) {
     const [state, setState] = useState('');
 
-    const evaluateDiscountCode = (discountCode) => {
-        const discountCodeLower = discountCode.toLowerCase();
-        let discountPercent = 0.00;
-
-        switch (discountCodeLower) {
-            case FIRST_RESPONDER_DISCOUNT_CODE:
-                discountPercent = +process.env.NEXT_PUBLIC_FIRST_RESPONDER_DISCOUNT_PERCENT ?? 0
-                break;
-            default:
-                discountPercent = 0.00;
-                break;
-        }
-        return discountPercent;
-    }
+    // debounce 0.75 seconds
+    const debouncedPassBack = useCallback(debounce((discountCodeClean) => {
+        props.changeDiscount(evaluateDiscountCode(discountCodeClean));
+    }, 750), []);
 
     const onChangeDiscountCode = (event) => {
-        const discountCodeClean = event.target.value.trim()
+        const discountCodeClean = event.target.value.trim();
         setState(discountCodeClean);
-        const discountPercent = evaluateDiscountCode(discountCodeClean);
-        props.changeDiscount(discountPercent);
-    }
+        debouncedPassBack(discountCodeClean);
+    };
 
     return (
-        <div className="p-6">
+        <div className="p-6 w-1/2">
             <p>Discount Code:</p>
             <input value={state} onChange={onChangeDiscountCode} className="border border-gray-400"/>
         </div>
